@@ -1,17 +1,10 @@
 ---
 import { siteConfig } from '../config';
-interface Props {
-  title?: string;
-  description?: string;
-  image?: string;
-  noIndex?: boolean;
-  type?: 'website' | 'article';
-}
-const { title, description, image, noIndex, type = 'website' } = Astro.props as Props;
+
 const base = import.meta.env.BASE_URL || '/';
 const site = Astro.site?.toString().replace(/\/$/, '') || '';
-const pageTitle = title ? `${title} | ${siteConfig.name}` : `${siteConfig.name} - ${siteConfig.title}`;
-const desc = description || siteConfig.description;
+const pageTitle = `${siteConfig.name} - ${siteConfig.title}`;
+const desc = siteConfig.description;
 // Ensure trailing slash for homepage canonical
 let pathname = Astro.url.pathname;
 if (pathname === '/' && base && base !== '/') pathname = base; // when using base like /portfolio/
@@ -19,10 +12,9 @@ if (!pathname.endsWith('/')) pathname = pathname === base ? `${pathname}/` : pat
 const canonical = site ? site + pathname : pathname;
 // Asset path helper respecting base
 const assetPath = (p: string) => (base.endsWith('/') ? base.slice(0, -1) : base) + (p.startsWith('/') ? p : `/${p}`);
-const ogImageRel = image || assetPath('og-image.png');
+const ogImageRel = assetPath('og-image.png');
 const ogImageUrl = site ? site + ogImageRel : ogImageRel;
 const faviconHref = assetPath('favicon.svg');
-const robots = noIndex ? 'noindex,nofollow' : 'index,follow';
 const accent = siteConfig.accentColor;
 const social = siteConfig.social || {};
 const sameAs: string[] = [social.github, social.linkedin].filter(Boolean) as string[];
@@ -54,7 +46,7 @@ const websiteJsonLd = {
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href={faviconHref} />
 <meta name="description" content={desc} />
-<meta name="robots" content={robots} />
+<meta name="robots" content="index,follow" />
 <link rel="canonical" href={canonical} />
 <meta name="theme-color" content={accent} />
 <meta name="author" content={siteConfig.name} />
@@ -63,7 +55,7 @@ const websiteJsonLd = {
 <meta property="og:site_name" content={siteConfig.name} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={desc} />
-<meta property="og:type" content={type} />
+<meta property="og:type" content="website" />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImageUrl} />
 <meta property="og:image:secure_url" content={ogImageUrl} />
