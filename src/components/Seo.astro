@@ -1,0 +1,77 @@
+---
+import { siteConfig } from '../config';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
+  type?: 'website' | 'article';
+}
+const { title, description, image, noIndex, type = 'website' } = Astro.props as Props;
+const base = import.meta.env.BASE_URL || '/';
+const site = Astro.site?.toString().replace(/\/$/, '') || '';
+const pageTitle = title ? `${title} | ${siteConfig.name}` : `${siteConfig.name} - ${siteConfig.title}`;
+const desc = description || siteConfig.description;
+// Ensure trailing slash for homepage canonical
+let pathname = Astro.url.pathname;
+if (pathname === '/' && base && base !== '/') pathname = base; // when using base like /portfolio/
+if (!pathname.endsWith('/')) pathname = pathname === base ? `${pathname}/` : pathname; // add slash for directory index
+const canonical = site ? site + pathname : pathname;
+// Asset path helper respecting base
+const assetPath = (p: string) => (base.endsWith('/') ? base.slice(0, -1) : base) + (p.startsWith('/') ? p : `/${p}`);
+const ogImageRel = image || assetPath('og-image.svg');
+const ogImageUrl = site ? site + ogImageRel : ogImageRel;
+const faviconHref = assetPath('favicon.svg');
+const robots = noIndex ? 'noindex,nofollow' : 'index,follow';
+const accent = siteConfig.accentColor;
+const social = siteConfig.social || {};
+const sameAs: string[] = [social.github, social.linkedin].filter(Boolean);
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.name,
+  jobTitle: siteConfig.title,
+  url: canonical,
+  email: social.email ? `mailto:${social.email}` : undefined,
+  sameAs,
+};
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.name,
+  url: canonical,
+  description: desc,
+  publisher: {
+    '@type': 'Person',
+    name: siteConfig.name,
+  },
+};
+---
+
+<!-- Reusable SEO head component -->
+<title>{pageTitle}</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href={faviconHref} />
+<meta name="description" content={desc} />
+<meta name="robots" content={robots} />
+<link rel="canonical" href={canonical} />
+<meta name="theme-color" content={accent} />
+<meta name="author" content={siteConfig.name} />
+<!-- Open Graph -->
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={desc} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={`${siteConfig.name} profile / social preview`} />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={ogImageUrl} />
+<!-- Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(personJsonLd)}></script>
+<script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
+<link rel="manifest" href={assetPath('site.webmanifest')} />

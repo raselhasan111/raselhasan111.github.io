@@ -1,0 +1,14 @@
+{
+  "name": "Rasel Hasan Portfolio",
+  "short_name": "Portfolio",
+  "start_url": "/portfolio/",
+  "scope": "/portfolio/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d4ed8",
+  "description": "Portfolio website of Rasel Hasan",
+  "icons": [
+    {"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}
+  ]
+}
+
