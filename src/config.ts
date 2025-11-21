@@ -3,6 +3,7 @@ export const siteConfig = {
   title: "Software Engineer",
   description:
     "Portfolio website of Rasel Hasan",
+  profileImage: "/images/profile.jpg",
   accentColor: "#1d4ed8",
   social: {
     email: "raselhasan.cse11@gmail.com",

@@ -129,8 +129,10 @@ import { siteConfig } from "../config";
       height="100%"
       stroke-width={0}></rect>
   </svg>
-  <div class="h-full mx-auto p-8 sm:p-12 md:p-24 flex items-center">
-    <div>
+  <div
+    class="h-full mx-auto p-8 sm:p-12 md:p-24 flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16"
+  >
+    <div class="flex-1 max-w-4xl">
       <h2
         class="text-pretty text-xl sm:text-2xl md:text-5xl font-bold tracking-tight text-gray-700 animate-fade-in"
       >
@@ -149,6 +151,23 @@ import { siteConfig } from "../config";
         {siteConfig.title}
       </p>
     </div>
+    {
+      siteConfig.profileImage && (
+        <div class="flex-1 flex justify-center max-w-sm md:max-w-md animate-fade-in animation-delay-400">
+          <div
+            class="relative w-64 h-64 md:w-80 md:h-80 aspect-square overflow-hidden shadow-2xl animate-float"
+            style="border-radius: 56% 44% 71% 29% / 50% 56% 44% 50%;"
+          >
+            <img
+              src={siteConfig.profileImage}
+              alt={siteConfig.name}
+              class="absolute inset-0 h-full w-full object-cover"
+              loading="eager"
+            />
+          </div>
+        </div>
+      )
+    }
   </div>
   <div
     class="absolute bottom-0 left-0 right-0 p-8 sm:p-12 md:p-24 flex gap-x-4 sm:gap-x-6 md:gap-x-8 text-gray-700 animate-fade-in animation-delay-600"
@@ -301,5 +320,21 @@ import { siteConfig } from "../config";
 
   .animation-delay-600 {
     animation-delay: 0.6s;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 </style>
