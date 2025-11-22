@@ -10,6 +10,7 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/in/raselhasan11",
     github: "https://github.com/raselhasan111",
   },
+  resume: "/files/Rasel_Hasan_Resume_Exp_2.5yrs+.pdf",
   aboutMe:
     "I'm a Software Engineer with strong focus on front-end development, experienced in building scalable and maintainable web applications. I've proven track record of delivering high-quality software products using modern technologies like React, Next.js, and TypeScript. I'm passionate about solving complex real-world problems.",
   skills: [
