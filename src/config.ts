@@ -1,4 +1,39 @@
-export const siteConfig = {
+interface SiteConfig {
+  name: string;
+  title: string;
+  description: string;
+  profileImage: string;
+  accentColor: string;
+  social: {
+    email: string;
+    linkedin: string;
+    github: string;
+    twitter?: string;
+  };
+  resume: string;
+  aboutMe: string;
+  skills: string[];
+  projects: {
+    name: string;
+    description: string;
+    link: string;
+    skills: string[];
+  }[];
+  experience: {
+    company: string;
+    title: string;
+    dateRange: string;
+    bullets: string[];
+  }[];
+  education: {
+    school: string;
+    degree: string;
+    dateRange: string;
+    achievements: string[];
+  }[];
+}
+
+export const siteConfig: SiteConfig = {
   name: "Rasel Hasan",
   title: "Software Engineer",
   description:
