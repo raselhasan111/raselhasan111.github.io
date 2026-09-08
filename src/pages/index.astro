@@ -20,6 +20,7 @@ import "../styles/global.css";
 >
   <head>
     <Seo />
+    <meta name="theme-color" content="#07080b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -119,15 +120,6 @@ import "../styles/global.css";
           }
         });
       })();
-    </script>
-
-    <!-- ---------- PWA: register service worker ---------- -->
-    <script is:inline>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/sw.js").catch(() => {});
-        });
-      }
     </script>
   </body>
 </html>

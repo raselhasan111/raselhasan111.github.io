@@ -7,7 +7,6 @@
     "build": "astro build",
     "preview": "astro preview",
     "og:image": "astro build && node scripts/generate-og.mjs",
-    "icons": "node scripts/generate-icons.mjs",
     "astro": "astro"
   },
   "dependencies": {
