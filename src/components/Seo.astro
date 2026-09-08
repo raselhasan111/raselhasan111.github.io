@@ -18,7 +18,7 @@ const OG_IMAGE_VERSION = 2;
 const ogImageUrl = (site ? site + ogImageRel : ogImageRel) + `?v=${OG_IMAGE_VERSION}`;
 const ogImageAlt = `${siteConfig.name} — ${siteConfig.title} at ${siteConfig.currentCompany}`;
 const faviconHref = assetPath('favicon.svg');
-const accent = siteConfig.accentColor;
+const accent = siteConfig.accentColor || '#07080b';
 const social = siteConfig.social || {};
 const sameAs: string[] = [social.github, social.linkedin].filter(Boolean) as string[];
 const personJsonLd = {
@@ -48,11 +48,19 @@ const websiteJsonLd = {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href={faviconHref} />
+<link rel="apple-touch-icon" href={assetPath('icons/apple-touch-icon.png')} />
 <meta name="description" content={desc} />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href={canonical} />
 <meta name="theme-color" content={accent} />
 <meta name="author" content={siteConfig.name} />
+<!-- PWA / installable app -->
+<link rel="manifest" href={assetPath('site.webmanifest')} />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content={siteConfig.name} />
+<meta name="application-name" content={siteConfig.name} />
 <!-- Open Graph -->
 <meta property="fb:app_id" content="836044232167877" />
 <meta property="og:site_name" content={siteConfig.name} />
@@ -76,4 +84,3 @@ const websiteJsonLd = {
 <!-- Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)}></script>
 <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)}></script>
-<link rel="manifest" href={assetPath('site.webmanifest')} />
