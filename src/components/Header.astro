@@ -29,6 +29,14 @@ const sections = [
     </div>
 
     <div class="nav-end">
+      <button id="install-app" class="install-btn" aria-label="Install app" hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12" />
+          <path d="m7 10 5 5 5-5" />
+          <path d="M5 21h14" />
+        </svg>
+        <span>Install</span>
+      </button>
       <button id="cmd-open" class="cmd-btn" aria-label="Command palette">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="7" />
@@ -137,6 +145,37 @@ const sections = [
   (function () {
     document.getElementById("cmd-open")?.addEventListener("click", () => {
       window.dispatchEvent(new CustomEvent("cmdk:toggle"));
+    });
+  })();
+
+  // Install-app button (Android / desktop Chrome via beforeinstallprompt)
+  (function () {
+    const btn = document.getElementById("install-app");
+    if (!btn) return;
+    // Hide if the app is already running as an installed PWA.
+    const installed =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+    if (installed) return;
+
+    let deferred = null;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferred = e;
+      btn.hidden = false;
+    });
+
+    btn.addEventListener("click", async () => {
+      if (!deferred) return;
+      deferred.prompt();
+      try { await deferred.userChoice; } catch (_) {}
+      deferred = null;
+      btn.hidden = true;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      deferred = null;
+      btn.hidden = true;
     });
   })();
 </script>
